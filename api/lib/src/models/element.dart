@@ -45,6 +45,8 @@ class ElementConstraints with _$ElementConstraints {
 abstract class PathElement {
   List<PathPoint> get points;
   PathProperty get property;
+
+  String get layer;
 }
 
 @Freezed(equal: false)
@@ -55,6 +57,7 @@ class PadElement with _$PadElement {
     double? zoom,
     @Default([]) List<PathPoint> points,
     @Default(PenProperty()) PenProperty property,
+    @Default(true) bool detectShape,
   }) = PenElement;
 
   const factory PadElement.text({

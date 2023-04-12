@@ -28,6 +28,7 @@ class PenHandler extends Handler<PenPainter> {
 
   @override
   void onPointerUp(PointerUpEvent event, EventContext context) {
+    print(_detectShape(elements[event.pointer]?.points ?? []));
     addPoint(context.buildContext, event.pointer, event.localPosition,
         _getPressure(event), event.kind,
         refresh: false);
@@ -124,4 +125,96 @@ class PenHandler extends Handler<PenPainter> {
           }));
         },
       );
+
+  bool _isLine(List<PathPoint> points, [double tolerance = 10]) {
+    if (points.length < 2) return false;
+    final firstPoint = points.first;
+    final secondPoint = points.last;
+    for (final point in points.sublist(1, points.length - 1)) {
+      if (point
+              .toPoint()
+              .distanceToLine(firstPoint.toPoint(), secondPoint.toPoint()) >
+          tolerance) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  bool _isCircle(List<PathPoint> points, [double tolerance = 10]) {
+    if (points.length < 2) return false;
+    // Find center of all points
+    final center = points
+            .map((e) => e.toPoint())
+            .reduce((value, element) => value + element) /
+        points.length.toDouble();
+    final radius = center.distanceTo(points.first.toPoint());
+    for (final point in points.sublist(1, points.length - 1)) {
+      if ((point.toPoint().distanceTo(center) - radius).abs() > tolerance * 2) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  bool _isRectangle(List<PathPoint> points, [double tolerance = 10]) {
+    if (points.length < 4) return false;
+    Point<double> topLeft = points.first.toPoint(),
+        topRight = points.first.toPoint(),
+        bottomLeft = points.first.toPoint(),
+        bottomRight = points.first.toPoint();
+    for (final point in points.sublist(1, points.length - 1)) {
+      final p = point.toPoint();
+      if (p.x < topLeft.x && p.y < topLeft.y) {
+        topLeft = p;
+      } else if (p.x > topRight.x && p.y < topRight.y) {
+        topRight = p;
+      } else if (p.x < bottomLeft.x && p.y > bottomLeft.y) {
+        bottomLeft = p;
+      } else if (p.x > bottomRight.x && p.y > bottomRight.y) {
+        bottomRight = p;
+      }
+    }
+    if ((topLeft.x - bottomLeft.x).abs() > tolerance * 2 ||
+        (topRight.x - bottomRight.x).abs() > tolerance * 2 ||
+        (topLeft.y - topRight.y).abs() > tolerance * 2 ||
+        (bottomLeft.y - bottomRight.y).abs() > tolerance * 2) {
+      return false;
+    }
+    // Put all points together to calculate center
+    final center = points
+            .map((e) => e.toPoint())
+            .reduce((value, element) => value + element) /
+        points.length.toDouble();
+
+    for (final p in points) {
+      final point = p.toPoint();
+      if ((point.distanceToLine(topLeft, topRight) > tolerance &&
+              point.distanceToLine(topLeft, bottomLeft) > tolerance &&
+              point.distanceToLine(bottomLeft, bottomRight) > tolerance &&
+              point.distanceToLine(topRight, bottomRight) > tolerance) ||
+          point.distanceTo(center) < tolerance) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  PathShape? _detectShape(List<PathPoint> points, [double tolerance = 10]) {
+    if (points.length < 2) return null;
+    final size = (points
+                .map((e) => e.toPoint())
+                .reduce((value, element) => value + element) /
+            points.length.toDouble())
+        .distanceTo(points.first.toPoint());
+    if (size < tolerance * 2) return null;
+    if (_isLine(points, tolerance)) {
+      return const PathShape.line();
+    } else if (_isRectangle(points, tolerance * 2)) {
+      return const PathShape.rectangle();
+    } else if (_isCircle(points, tolerance * 2)) {
+      return const PathShape.circle();
+    }
+    return null;
+  }
 }

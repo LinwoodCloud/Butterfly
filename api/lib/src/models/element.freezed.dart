@@ -866,7 +866,7 @@ mixin _$PadElement {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String layer, double? zoom,
-            List<PathPoint> points, PenProperty property)
+            List<PathPoint> points, PenProperty property, bool detectShape)
         pen,
     required TResult Function(
             String layer,
@@ -902,7 +902,7 @@ mixin _$PadElement {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String layer, double? zoom, List<PathPoint> points,
-            PenProperty property)?
+            PenProperty property, bool detectShape)?
         pen,
     TResult? Function(
             String layer,
@@ -938,7 +938,7 @@ mixin _$PadElement {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String layer, double? zoom, List<PathPoint> points,
-            PenProperty property)?
+            PenProperty property, bool detectShape)?
         pen,
     TResult Function(
             String layer,
@@ -1051,7 +1051,8 @@ abstract class _$$PenElementCopyWith<$Res>
       {String layer,
       double? zoom,
       List<PathPoint> points,
-      PenProperty property});
+      PenProperty property,
+      bool detectShape});
 }
 
 /// @nodoc
@@ -1069,6 +1070,7 @@ class __$$PenElementCopyWithImpl<$Res>
     Object? zoom = freezed,
     Object? points = null,
     Object? property = freezed,
+    Object? detectShape = null,
   }) {
     return _then(_$PenElement(
       layer: null == layer
@@ -1087,6 +1089,10 @@ class __$$PenElementCopyWithImpl<$Res>
           ? _value.property
           : property // ignore: cast_nullable_to_non_nullable
               as PenProperty,
+      detectShape: null == detectShape
+          ? _value.detectShape
+          : detectShape // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -1099,6 +1105,7 @@ class _$PenElement implements PenElement {
       this.zoom,
       final List<PathPoint> points = const [],
       this.property = const PenProperty(),
+      this.detectShape = true,
       final String? $type})
       : _points = points,
         $type = $type ?? 'pen';
@@ -1123,13 +1130,16 @@ class _$PenElement implements PenElement {
   @override
   @JsonKey()
   final PenProperty property;
+  @override
+  @JsonKey()
+  final bool detectShape;
 
   @JsonKey(name: 'type')
   final String $type;
 
   @override
   String toString() {
-    return 'PadElement.pen(layer: $layer, zoom: $zoom, points: $points, property: $property)';
+    return 'PadElement.pen(layer: $layer, zoom: $zoom, points: $points, property: $property, detectShape: $detectShape)';
   }
 
   @JsonKey(ignore: true)
@@ -1142,7 +1152,7 @@ class _$PenElement implements PenElement {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String layer, double? zoom,
-            List<PathPoint> points, PenProperty property)
+            List<PathPoint> points, PenProperty property, bool detectShape)
         pen,
     required TResult Function(
             String layer,
@@ -1174,14 +1184,14 @@ class _$PenElement implements PenElement {
             ShapeProperty property)
         shape,
   }) {
-    return pen(layer, zoom, points, property);
+    return pen(layer, zoom, points, property, detectShape);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String layer, double? zoom, List<PathPoint> points,
-            PenProperty property)?
+            PenProperty property, bool detectShape)?
         pen,
     TResult? Function(
             String layer,
@@ -1213,14 +1223,14 @@ class _$PenElement implements PenElement {
             ShapeProperty property)?
         shape,
   }) {
-    return pen?.call(layer, zoom, points, property);
+    return pen?.call(layer, zoom, points, property, detectShape);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String layer, double? zoom, List<PathPoint> points,
-            PenProperty property)?
+            PenProperty property, bool detectShape)?
         pen,
     TResult Function(
             String layer,
@@ -1254,7 +1264,7 @@ class _$PenElement implements PenElement {
     required TResult orElse(),
   }) {
     if (pen != null) {
-      return pen(layer, zoom, points, property);
+      return pen(layer, zoom, points, property, detectShape);
     }
     return orElse();
   }
@@ -1312,7 +1322,8 @@ abstract class PenElement implements PadElement, PathElement {
       {final String layer,
       final double? zoom,
       final List<PathPoint> points,
-      final PenProperty property}) = _$PenElement;
+      final PenProperty property,
+      final bool detectShape}) = _$PenElement;
 
   factory PenElement.fromJson(Map<String, dynamic> json) =
       _$PenElement.fromJson;
@@ -1322,6 +1333,7 @@ abstract class PenElement implements PadElement, PathElement {
   double? get zoom;
   List<PathPoint> get points;
   PenProperty get property;
+  bool get detectShape;
   @override
   @JsonKey(ignore: true)
   _$$PenElementCopyWith<_$PenElement> get copyWith =>
@@ -1463,7 +1475,7 @@ class _$TextElement implements TextElement {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String layer, double? zoom,
-            List<PathPoint> points, PenProperty property)
+            List<PathPoint> points, PenProperty property, bool detectShape)
         pen,
     required TResult Function(
             String layer,
@@ -1502,7 +1514,7 @@ class _$TextElement implements TextElement {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String layer, double? zoom, List<PathPoint> points,
-            PenProperty property)?
+            PenProperty property, bool detectShape)?
         pen,
     TResult? Function(
             String layer,
@@ -1541,7 +1553,7 @@ class _$TextElement implements TextElement {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String layer, double? zoom, List<PathPoint> points,
-            PenProperty property)?
+            PenProperty property, bool detectShape)?
         pen,
     TResult Function(
             String layer,
@@ -1781,7 +1793,7 @@ class _$ImageElement implements ImageElement {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String layer, double? zoom,
-            List<PathPoint> points, PenProperty property)
+            List<PathPoint> points, PenProperty property, bool detectShape)
         pen,
     required TResult Function(
             String layer,
@@ -1820,7 +1832,7 @@ class _$ImageElement implements ImageElement {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String layer, double? zoom, List<PathPoint> points,
-            PenProperty property)?
+            PenProperty property, bool detectShape)?
         pen,
     TResult? Function(
             String layer,
@@ -1859,7 +1871,7 @@ class _$ImageElement implements ImageElement {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String layer, double? zoom, List<PathPoint> points,
-            PenProperty property)?
+            PenProperty property, bool detectShape)?
         pen,
     TResult Function(
             String layer,
@@ -2101,7 +2113,7 @@ class _$SvgElement implements SvgElement {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String layer, double? zoom,
-            List<PathPoint> points, PenProperty property)
+            List<PathPoint> points, PenProperty property, bool detectShape)
         pen,
     required TResult Function(
             String layer,
@@ -2140,7 +2152,7 @@ class _$SvgElement implements SvgElement {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String layer, double? zoom, List<PathPoint> points,
-            PenProperty property)?
+            PenProperty property, bool detectShape)?
         pen,
     TResult? Function(
             String layer,
@@ -2179,7 +2191,7 @@ class _$SvgElement implements SvgElement {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String layer, double? zoom, List<PathPoint> points,
-            PenProperty property)?
+            PenProperty property, bool detectShape)?
         pen,
     TResult Function(
             String layer,
@@ -2391,7 +2403,7 @@ class _$ShapeElement implements ShapeElement {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String layer, double? zoom,
-            List<PathPoint> points, PenProperty property)
+            List<PathPoint> points, PenProperty property, bool detectShape)
         pen,
     required TResult Function(
             String layer,
@@ -2430,7 +2442,7 @@ class _$ShapeElement implements ShapeElement {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String layer, double? zoom, List<PathPoint> points,
-            PenProperty property)?
+            PenProperty property, bool detectShape)?
         pen,
     TResult? Function(
             String layer,
@@ -2469,7 +2481,7 @@ class _$ShapeElement implements ShapeElement {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String layer, double? zoom, List<PathPoint> points,
-            PenProperty property)?
+            PenProperty property, bool detectShape)?
         pen,
     TResult Function(
             String layer,

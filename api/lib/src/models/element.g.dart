@@ -82,6 +82,7 @@ _$PenElement _$$PenElementFromJson(Map json) => _$PenElement(
           ? const PenProperty()
           : PenProperty.fromJson(
               Map<String, dynamic>.from(json['property'] as Map)),
+      detectShape: json['detectShape'] as bool? ?? true,
       $type: json['type'] as String?,
     );
 
@@ -91,6 +92,7 @@ Map<String, dynamic> _$$PenElementToJson(_$PenElement instance) =>
       'zoom': instance.zoom,
       'points': instance.points.map((e) => e.toJson()).toList(),
       'property': instance.property.toJson(),
+      'detectShape': instance.detectShape,
       'type': instance.$type,
     };
 
