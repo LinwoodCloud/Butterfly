@@ -27,6 +27,7 @@ AppDir:
     - libgtk-3-0
     - libsecret-1-dev
     - libjsoncpp-dev
+    - librsvg2-common
     exclude:
     - humanity-icon-theme
     - hicolor-icon-theme
