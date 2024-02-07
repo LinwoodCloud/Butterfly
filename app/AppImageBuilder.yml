@@ -4,7 +4,8 @@ script:
  - rm -rf AppDir || true
  - cp -r build/linux/x64/release/bundle AppDir
  - mkdir -p AppDir/usr/share/icons/hicolor/64x64/apps/
- - cp linux/debian/usr/share/icons/hicolor AppDir/usr/share/icons/hicolor -r
+ - mv AppDir/lib/ AppDir/usr/
+ - cp linux/debian/usr/share/icons/hicolor/* AppDir/usr/share/icons/hicolor/64x64/apps/
 AppDir:
   path: ./AppDir
   app_info:
@@ -32,7 +33,6 @@ AppDir:
     - adwaita-icon-theme
     - ubuntu-mono
   files:
-    include: []
     exclude:
     - usr/share/man
     - usr/share/doc/*/README.*
@@ -40,30 +40,27 @@ AppDir:
     - usr/share/doc/*/NEWS.*
     - usr/share/doc/*/TODO.*
   test:
-    fedora-30:
+    fedora:
       image: appimagecrafters/tests-env:fedora-30
       command: ./AppRun
       use_host_x: true
-    debian-stable:
+    debian:
       image: appimagecrafters/tests-env:debian-stable
       command: ./AppRun
       use_host_x: true
-    archlinux-latest:
+    arch:
       image: appimagecrafters/tests-env:archlinux-latest
       command: ./AppRun
       use_host_x: true
-    centos-7:
+    centos:
       image: appimagecrafters/tests-env:centos-7
       command: ./AppRun
       use_host_x: true
-    ubuntu-xenial:
+    ubuntu:
       image: appimagecrafters/tests-env:ubuntu-xenial
       command: ./AppRun
       use_host_x: true
-  runtime: 
-    env:
-      GDK_BACKEND: x11
-      GIO_MODULE_DIR: $APPDIR/usr/lib/x86_64-linux-gnu/gio/modules/
 AppImage:
   arch: x86_64
   update-information: guess
+  sign-key: None
